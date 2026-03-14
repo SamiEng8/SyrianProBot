@@ -235,25 +235,30 @@ INVALID_CLUB_LABELS = {
 
 def load_seen():
     if not SEEN_FILE.exists():
-        return set()
+        return {}
     try:
         with open(SEEN_FILE, "r", encoding="utf-8") as f:
-            return set(json.load(f))
+            data = json.load(f)
+            if isinstance(data, list):
+                return {player_id: {"id": player_id} for player_id in data}
+            if isinstance(data, dict):
+                return data
+            return {}
     except Exception:
-        return set()
+        return {}
 
 
-def save_seen(seen_ids):
+def save_seen(seen_data):
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with open(SEEN_FILE, "w", encoding="utf-8") as f:
-        json.dump(sorted(list(seen_ids)), f, ensure_ascii=False, indent=2)
+        json.dump(seen_data, f, ensure_ascii=False, indent=2, sort_keys=True)
 
 
 def send_telegram_message(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     max_attempts = 5
 
-    for attempt in range(max_attempts):
+    for _ in range(max_attempts):
         response = requests.post(
             url,
             data={
@@ -337,47 +342,29 @@ def flag_for_country(country):
         "Chinese Taipei": "🇹🇼",
         "Colombia": "🇨🇴",
         "Congo": "🇨🇬",
-        "Cookinseln": "🇨🇰",
         "Costa Rica": "🇨🇷",
         "Cote d'Ivoire": "🇨🇮",
-        "Crimea": "🏳️",
         "Croatia": "🇭🇷",
-        "CSSR": "🏳️",
         "Cuba": "🇨🇺",
-        "Curacao": "🇨🇼",
+        "Cyprus": "🇨🇾",
         "Czech Republic": "🇨🇿",
-        "Djibouti": "🇩🇯",
+        "Denmark": "🇩🇰",
         "Dominica": "🇩🇲",
         "Dominican Republic": "🇩🇴",
         "DR Congo": "🇨🇩",
-        "East Germany (GDR)": "🏳️",
         "Ecuador": "🇪🇨",
         "Egypt": "🇪🇬",
         "El Salvador": "🇸🇻",
-        "Equatorial Guinea": "🇬🇶",
-        "Eritrea": "🇪🇷",
+        "England": "🏴",
         "Estonia": "🇪🇪",
-        "Eswatini": "🇸🇿",
         "Ethiopia": "🇪🇹",
-        "Falkland Islands": "🇫🇰",
-        "Faroe Islands": "🇫🇴",
-        "Federated States of Micronesia": "🇫🇲",
-        "Fiji": "🇫🇯",
         "Finland": "🇫🇮",
-        "French Guiana": "🇬🇫",
+        "France": "🇫🇷",
         "Gabon": "🇬🇦",
         "Georgia": "🇬🇪",
+        "Germany": "🇩🇪",
         "Ghana": "🇬🇭",
-        "Gibraltar": "🇬🇮",
-        "Greenland": "🇬🇱",
-        "Grenada": "🇬🇩",
-        "Guadeloupe": "🇬🇵",
-        "Guam": "🇬🇺",
-        "Guatemala": "🇬🇹",
-        "Guernsey": "🇬🇬",
-        "Guinea": "🇬🇳",
-        "Guinea-Bissau": "🇬🇼",
-        "Guyana": "🇬🇾",
+        "Greece": "🇬🇷",
         "Honduras": "🇭🇳",
         "Hongkong": "🇭🇰",
         "Hungary": "🇭🇺",
@@ -385,118 +372,86 @@ def flag_for_country(country):
         "India": "🇮🇳",
         "Indonesia": "🇮🇩",
         "Iran": "🇮🇷",
+        "Iraq": "🇮🇶",
         "Ireland": "🇮🇪",
-        "Isle of Man": "🇮🇲",
         "Israel": "🇮🇱",
+        "Italy": "🇮🇹",
         "Jamaica": "🇯🇲",
         "Japan": "🇯🇵",
-        "Jersey": "🇯🇪",
-        "Jugoslawien (SFR)": "🏳️",
+        "Jordan": "🇯🇴",
         "Kazakhstan": "🇰🇿",
         "Kenya": "🇰🇪",
-        "Kiribati": "🇰🇮",
         "Korea, North": "🇰🇵",
         "Korea, South": "🇰🇷",
         "Kosovo": "🇽🇰",
         "Kuwait": "🇰🇼",
         "Kyrgyzstan": "🇰🇬",
-        "Laos": "🇱🇦",
         "Latvia": "🇱🇻",
-        "Lesotho": "🇱🇸",
-        "Liberia": "🇱🇷",
+        "Lebanon": "🇱🇧",
         "Libya": "🇱🇾",
-        "Liechtenstein": "🇱🇮",
         "Lithuania": "🇱🇹",
         "Luxembourg": "🇱🇺",
-        "Macao": "🇲🇴",
-        "Macedonia": "🇲🇰",
-        "Madagascar": "🇲🇬",
-        "Malawi": "🇲🇼",
         "Malaysia": "🇲🇾",
         "Maldives": "🇲🇻",
         "Mali": "🇲🇱",
         "Malta": "🇲🇹",
-        "Mandate for Palestine": "🏳️",
         "Mauritania": "🇲🇷",
-        "Mauritius": "🇲🇺",
-        "Mayotte": "🇾🇹",
         "Mexico": "🇲🇽",
         "Moldova": "🇲🇩",
         "Monaco": "🇲🇨",
-        "Mongolia": "🇲🇳",
         "Montenegro": "🇲🇪",
-        "Montserrat": "🇲🇸",
         "Morocco": "🇲🇦",
-        "Mozambique": "🇲🇿",
-        "Myanmar": "🇲🇲",
-        "Namibia": "🇳🇦",
-        "Nauru": "🇳🇷",
-        "Nepal": "🇳🇵",
-        "Netherlands Antilles": "🏳️",
-        "Netherlands East India": "🏳️",
-        "New Caledonia": "🇳🇨",
+        "Netherlands": "🇳🇱",
         "New Zealand": "🇳🇿",
         "Nicaragua": "🇳🇮",
         "Niger": "🇳🇪",
         "Nigeria": "🇳🇬",
         "North Macedonia": "🇲🇰",
         "Northern Ireland": "🏴",
-        "Northern Mariana Islands": "🇲🇵",
+        "Norway": "🇳🇴",
         "Oman": "🇴🇲",
-        "Pakistan": "🇵🇰",
-        "Palau": "🇵🇼",
         "Palestine": "🇵🇸",
         "Panama": "🇵🇦",
-        "Papua New Guinea": "🇵🇬",
         "Paraguay": "🇵🇾",
-        "People's republic of the Congo": "🏳️",
         "Peru": "🇵🇪",
         "Philippines": "🇵🇭",
         "Poland": "🇵🇱",
         "Portugal": "🇵🇹",
         "Puerto Rico": "🇵🇷",
-        "Réunion": "🇷🇪",
-        "Rwanda": "🇷🇼",
-        "Saint-Martin": "🇲🇫",
-        "Samoa": "🇼🇸",
-        "San Marino": "🇸🇲",
-        "Sao Tome and Principe": "🇸🇹",
+        "Qatar": "🇶🇦",
+        "Romania": "🇷🇴",
+        "Russia": "🇷🇺",
+        "Saudi Arabia": "🇸🇦",
+        "Scotland": "🏴",
         "Senegal": "🇸🇳",
         "Serbia": "🇷🇸",
-        "Serbia and Montenegro": "🏳️",
-        "Seychelles": "🇸🇨",
-        "Sierra Leone": "🇸🇱",
         "Singapore": "🇸🇬",
         "Slovakia": "🇸🇰",
         "Slovenia": "🇸🇮",
-        "Solomon Islands": "🇸🇧",
-        "Somalia": "🇸🇴",
         "South Africa": "🇿🇦",
         "Southern Sudan": "🇸🇸",
+        "Spain": "🇪🇸",
+        "Sri Lanka": "🇱🇰",
         "Sudan": "🇸🇩",
         "Suriname": "🇸🇷",
-        "Swaziland": "🇸🇿",
+        "Sweden": "🇸🇪",
+        "Switzerland": "🇨🇭",
         "Syria": "🇸🇾",
-        "Tahiti": "🇵🇫",
         "Tajikistan": "🇹🇯",
-        "Tanzania": "🇹🇿",
         "Thailand": "🇹🇭",
         "Tunisia": "🇹🇳",
+        "Türkiye": "🇹🇷",
         "Turkmenistan": "🇹🇲",
-        "Turks- and Caicosinseln": "🇹🇨",
-        "UdSSR": "🏳️",
-        "Uganda": "🇺🇬",
         "Ukraine": "🇺🇦",
+        "United Arab Emirates": "🇦🇪",
         "United Kingdom": "🇬🇧",
+        "United States": "🇺🇸",
         "Uruguay": "🇺🇾",
         "Uzbekistan": "🇺🇿",
-        "Vanuatu": "🇻🇺",
-        "Vatican": "🇻🇦",
         "Venezuela": "🇻🇪",
         "Vietnam": "🇻🇳",
         "Wales": "🏴",
         "Yemen": "🇾🇪",
-        "Yugoslavia (Republic)": "🏳️",
     }
     return flags.get(country, "🏳️")
 
@@ -599,21 +554,65 @@ def get_position_from_text(text):
     return "Unknown position"
 
 
+def determine_without_club(club_name):
+    if not club_name:
+        return True
+    return clean(club_name) in {"Unknown club", "Without Club"}
+
+
+def extract_national_team(soup):
+    selectors = [
+        'a[href*="/nationalmannschaft/"]',
+        'a[href*="/nationalteam/"]',
+        '.data-header__details a[href*="/national"]',
+        '.data-header__box--small a[href*="/national"]',
+    ]
+
+    candidates = []
+
+    for selector in selectors:
+        for link in soup.select(selector):
+            href = link.get("href", "")
+            label = clean(link.get_text(" ", strip=True))
+            if not label:
+                continue
+            href_lower = href.lower()
+            if "/nationalmannschaft/" in href_lower or "/nationalteam/" in href_lower:
+                candidates.append(label)
+
+    for candidate in candidates:
+        lowered = candidate.lower()
+        if lowered in {"current international", "international", "national player"}:
+            continue
+        return candidate
+
+    full_text = clean(soup.get_text(" ", strip=True))
+    match = re.search(r"Current international:\s*([A-Za-zÀ-ÿ0-9\s\-\.\(\)&']+)", full_text, re.IGNORECASE)
+    if match:
+        value = clean(match.group(1))
+        if value:
+            return value
+
+    return ""
+
+
 def fetch_player_profile_details(session, profile_url):
     club = ""
     position = "Unknown position"
+    national_team = ""
 
     try:
         response = session.get(profile_url, timeout=30)
         response.raise_for_status()
     except Exception as e:
         print(f"Failed to load profile {profile_url}: {e}")
-        return club, position
+        return club, position, national_team
 
     soup = BeautifulSoup(response.text, "lxml")
     page_text = clean(soup.get_text(" ", strip=True))
 
     position = get_position_from_text(page_text)
+    national_team = extract_national_team(soup)
 
     club_selectors = [
         'a[href*="/startseite/verein/"]',
@@ -633,7 +632,7 @@ def fetch_player_profile_details(session, profile_url):
         if club:
             break
 
-    return club, position
+    return club, position, national_team
 
 
 def parse_players(session, html, club_country_name, reason_text):
@@ -675,16 +674,19 @@ def parse_players(session, html, club_country_name, reason_text):
 
         row_text = clean(row.get_text(" ", strip=True))
         position = get_position_from_text(row_text)
+        national_team = ""
 
-        if not club or position == "Unknown position":
-            fallback_club, fallback_position = fetch_player_profile_details(session, profile_url)
+        if not club or position == "Unknown position" or not national_team:
+            fallback_club, fallback_position, fallback_national_team = fetch_player_profile_details(session, profile_url)
             if not club and fallback_club:
                 club = fallback_club
             if position == "Unknown position" and fallback_position:
                 position = fallback_position
+            if fallback_national_team:
+                national_team = fallback_national_team
             time.sleep(1)
 
-        players.append({
+        player = {
             "id": player_id,
             "name": name,
             "club": club or "Unknown club",
@@ -692,7 +694,11 @@ def parse_players(session, html, club_country_name, reason_text):
             "position": position,
             "reason": reason_text,
             "profile_url": profile_url,
-        })
+            "national_team": national_team or "",
+        }
+        player["is_without_club"] = determine_without_club(player["club"])
+
+        players.append(player)
 
     unique = {}
     for p in players:
@@ -702,6 +708,9 @@ def parse_players(session, html, club_country_name, reason_text):
             old_reason = unique[p["id"]]["reason"]
             if p["reason"] not in old_reason:
                 unique[p["id"]]["reason"] = old_reason + ", " + p["reason"]
+
+            if not unique[p["id"]].get("national_team") and p.get("national_team"):
+                unique[p["id"]]["national_team"] = p["national_team"]
 
     return list(unique.values())
 
@@ -749,23 +758,129 @@ def collect_all_matches():
                 else:
                     existing_reason = all_players[player["id"]]["reason"]
                     if player["reason"] not in existing_reason:
-                        all_players[player["id"]]["reason"] = (
-                            existing_reason + ", " + player["reason"]
-                        )
+                        all_players[player["id"]]["reason"] = existing_reason + ", " + player["reason"]
+
+                    if not all_players[player["id"]].get("national_team") and player.get("national_team"):
+                        all_players[player["id"]]["national_team"] = player["national_team"]
 
     return list(all_players.values())
 
 
-def format_message(player):
+def snapshot_player(player):
+    return {
+        "id": player["id"],
+        "name": player["name"],
+        "club": player["club"],
+        "club_country": player["club_country"],
+        "position": player["position"],
+        "reason": player["reason"],
+        "profile_url": player["profile_url"],
+        "is_without_club": player["is_without_club"],
+        "national_team": player.get("national_team", ""),
+    }
+
+
+def detect_events(old_player, new_player):
+    events = []
+
+    if old_player is None:
+        events.append("new_player")
+        return events
+
+    old_club = old_player.get("club", "Unknown club")
+    new_club = new_player.get("club", "Unknown club")
+
+    old_country = old_player.get("club_country", "")
+    new_country = new_player.get("club_country", "")
+
+    old_without_club = bool(old_player.get("is_without_club", determine_without_club(old_club)))
+    new_without_club = bool(new_player.get("is_without_club", determine_without_club(new_club)))
+
+    old_national_team = clean(old_player.get("national_team", ""))
+    new_national_team = clean(new_player.get("national_team", ""))
+
+    if old_without_club and not new_without_club:
+        events.append("signed_with_club")
+    elif not old_without_club and new_without_club:
+        events.append("became_without_club")
+    elif not old_without_club and not new_without_club and old_club != new_club:
+        events.append("club_changed")
+
+    if old_country and new_country and old_country != new_country:
+        events.append("country_changed")
+
+    if not old_national_team and new_national_team:
+        events.append("joined_national_team")
+    elif old_national_team and not new_national_team:
+        events.append("left_national_team")
+    elif old_national_team and new_national_team and old_national_team != new_national_team:
+        events.append("changed_national_team")
+
+    return events
+
+
+def format_new_player_message(player):
     flag = flag_for_country(player["club_country"])
+    extra_nt = ""
+    if player.get("national_team"):
+        extra_nt = f"\n🏟️ National team: {player['national_team']}"
+
     return (
         "Hey bro! I got a new player for you 😁\n\n"
         f"🏃‍♂️ Player: {player['name']}\n"
         f"🌎 Plays in: {flag} {player['club_country']}\n"
         f"🚩 Club: {player['club'] or 'Unknown club'}\n"
-        f"🔄 Position: {player['position']}\n"
+        f"🔄 Position: {player['position']}"
+        f"{extra_nt}\n"
         f"🇸🇾 Reason: {player['reason']}\n"
         f"📎 Profile: {player['profile_url']}"
+    )
+
+
+def format_update_message(old_player, new_player, events):
+    parts = []
+    flag = flag_for_country(new_player["club_country"])
+
+    if "signed_with_club" in events:
+        parts.append("Reason: Signed with a club")
+        parts.append(f"Previous status: {old_player.get('club', 'Without club')}")
+        parts.append(f"New club: {new_player['club']}")
+
+    elif "became_without_club" in events:
+        parts.append("Reason: Became without club")
+        parts.append(f"Previous club: {old_player.get('club', 'Unknown club')}")
+        parts.append(f"Current status: {new_player['club']}")
+
+    elif "club_changed" in events:
+        parts.append("Reason: Club changed")
+        parts.append(f"Old club: {old_player.get('club', 'Unknown club')}")
+        parts.append(f"New club: {new_player['club']}")
+
+    if "country_changed" in events:
+        parts.append(f"Old country of play: {old_player.get('club_country', 'Unknown')}")
+        parts.append(f"New country of play: {new_player['club_country']}")
+
+    if "joined_national_team" in events:
+        parts.append("Reason: Joined national team")
+        parts.append(f"National team: {new_player.get('national_team', 'Unknown')}")
+
+    elif "left_national_team" in events:
+        parts.append("Reason: Left national team")
+        parts.append(f"Previous national team: {old_player.get('national_team', 'Unknown')}")
+
+    elif "changed_national_team" in events:
+        parts.append("Reason: National team changed")
+        parts.append(f"Old national team: {old_player.get('national_team', 'Unknown')}")
+        parts.append(f"New national team: {new_player.get('national_team', 'Unknown')}")
+
+    return (
+        "Hey bro! I got an update for you 😁\n\n"
+        f"🏃‍♂️ Player: {new_player['name']}\n"
+        f"🌎 Plays in: {flag} {new_player['club_country']}\n"
+        f"🚩 Club: {new_player['club'] or 'Unknown club'}\n"
+        f"🔄 Position: {new_player['position']}\n"
+        + "\n".join(parts) + "\n"
+        + f"📎 Profile: {new_player['profile_url']}"
     )
 
 
@@ -773,20 +888,44 @@ def main():
     if not BOT_TOKEN or not CHAT_ID:
         raise RuntimeError("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
 
-    seen_ids = load_seen()
+    seen_data = load_seen()
     players = collect_all_matches()
 
-    new_players = [p for p in players if p["id"] not in seen_ids]
-
     print(f"Total matches found: {len(players)}")
-    print(f"New players found: {len(new_players)}")
 
-    for player in new_players:
-        send_telegram_message(format_message(player))
-        seen_ids.add(player["id"])
-        time.sleep(2)
+    outbound_messages = []
 
-    save_seen(seen_ids)
+    for player in players:
+        old_player = seen_data.get(player["id"])
+        events = detect_events(old_player, player)
+
+        if not events:
+            seen_data[player["id"]] = snapshot_player(player)
+            continue
+
+        if "new_player" in events:
+            message = format_new_player_message(player)
+        else:
+            message = format_update_message(old_player, player, events)
+
+        outbound_messages.append((player["id"], message, snapshot_player(player), events))
+
+    print(f"Messages to send: {len(outbound_messages)}")
+
+    outbound_messages = outbound_messages[:MAX_MESSAGES_PER_RUN]
+
+    for player_id, message, snapshot, events in outbound_messages:
+        print(f"Sending alert for {player_id}: {', '.join(events)}")
+        send_telegram_message(message)
+        seen_data[player_id] = snapshot
+        save_seen(seen_data)
+        time.sleep(MESSAGE_DELAY_SECONDS)
+
+    for player in players:
+        if player["id"] not in seen_data:
+            seen_data[player["id"]] = snapshot_player(player)
+
+    save_seen(seen_data)
 
 
 if __name__ == "__main__":
