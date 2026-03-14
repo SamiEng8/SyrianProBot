@@ -28,7 +28,6 @@ CLUB_COUNTRIES = {
     6: "Angola",
     9: "Argentina",
     10: "Armenia",
-    233: "Aruba",
     12: "Australia",
     127: "Austria",
     13: "Azerbaijan",
@@ -37,7 +36,6 @@ CLUB_COUNTRIES = {
     19: "Belgium",
     23: "Bolivia",
     24: "Bosnia-Herzegovina",
-    25: "Botswana",
     26: "Brazil",
     276: "British India",
     231: "British Virgin Islands",
@@ -69,7 +67,6 @@ CLUB_COUNTRIES = {
     45: "El Salvador",
     189: "England",
     47: "Estonia",
-    162: "Eswatini",
     11: "Ethiopia",
     49: "Finland",
     50: "France",
@@ -78,9 +75,6 @@ CLUB_COUNTRIES = {
     40: "Germany",
     54: "Ghana",
     56: "Greece",
-    243: "Greenland",
-    55: "Grenada",
-    251: "Guadeloupe",
     66: "Honduras",
     218: "Hongkong",
     178: "Hungary",
@@ -94,7 +88,6 @@ CLUB_COUNTRIES = {
     75: "Italy",
     76: "Jamaica",
     77: "Japan",
-    272: "Jersey",
     78: "Jordan",
     223: "Jugoslawien (SFR)",
     81: "Kazakhstan",
@@ -106,9 +99,7 @@ CLUB_COUNTRIES = {
     90: "Kyrgyzstan",
     92: "Latvia",
     94: "Lebanon",
-    95: "Liberia",
     96: "Libya",
-    97: "Liechtenstein",
     98: "Lithuania",
     99: "Luxembourg",
     274: "Macedonia",
@@ -120,7 +111,6 @@ CLUB_COUNTRIES = {
     257: "Marshall Islands",
     207: "Martinique",
     108: "Mauritania",
-    109: "Mauritius",
     110: "Mexico",
     112: "Moldova",
     113: "Monaco",
@@ -140,7 +130,6 @@ CLUB_COUNTRIES = {
     268: "Northern Mariana Islands",
     125: "Norway",
     126: "Oman",
-    128: "Pakistan",
     240: "Palestine",
     130: "Panama",
     132: "Paraguay",
@@ -151,11 +140,8 @@ CLUB_COUNTRIES = {
     136: "Portugal",
     228: "Puerto Rico",
     137: "Qatar",
-    249: "Réunion",
     140: "Romania",
     141: "Russia",
-    139: "Rwanda",
-    144: "San Marino",
     146: "Saudi Arabia",
     190: "Scotland",
     149: "Senegal",
@@ -175,12 +161,8 @@ CLUB_COUNTRIES = {
     273: "Swaziland",
     147: "Sweden",
     148: "Switzerland",
-    237: "Tahiti",
     165: "Tajikistan",
     167: "Thailand",
-    52: "The Gambia",
-    168: "Togo",
-    169: "Tonga",
     170: "Trinidad and Tobago",
     173: "Tunisia",
     174: "Türkiye",
@@ -216,6 +198,35 @@ POSSIBLE_POSITIONS = [
     "Right Winger",
     "Second Striker",
     "Centre-Forward",
+    "Striker",
+    "Forward",
+    "Winger",
+    "Midfielder",
+    "Defender",
+    "Full-Back",
+    "Wing-Back",
+    "Attack",
+    "Midfield",
+    "Defence",
+]
+
+POSITION_ALIASES = [
+    ("Centre-Forward", ["centre-forward", "center-forward", "striker"]),
+    ("Second Striker", ["second striker", "support striker"]),
+    ("Right Winger", ["right winger", "right wing"]),
+    ("Left Winger", ["left winger", "left wing"]),
+    ("Attacking Midfield", ["attacking midfield", "attacking midfielder", "cam"]),
+    ("Central Midfield", ["central midfield", "central midfielder", "midfield"]),
+    ("Defensive Midfield", ["defensive midfield", "defensive midfielder", "dm"]),
+    ("Right Midfield", ["right midfield", "right midfielder"]),
+    ("Left Midfield", ["left midfield", "left midfielder"]),
+    ("Centre-Back", ["centre-back", "center-back", "centre back", "center back"]),
+    ("Right-Back", ["right-back", "right back", "full-back", "right full-back", "right wing-back"]),
+    ("Left-Back", ["left-back", "left back", "left full-back", "left wing-back"]),
+    ("Goalkeeper", ["goalkeeper", "keeper"]),
+    ("Defender", ["defender", "defence"]),
+    ("Midfielder", ["midfielder"]),
+    ("Forward", ["forward", "attack"]),
 ]
 
 INVALID_CLUB_LABELS = {
@@ -229,6 +240,7 @@ INVALID_CLUB_LABELS = {
     "Winter signing",
 }
 
+
 def load_seen():
     if not SEEN_FILE.exists():
         return set()
@@ -238,10 +250,12 @@ def load_seen():
     except Exception:
         return set()
 
+
 def save_seen(seen_ids):
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with open(SEEN_FILE, "w", encoding="utf-8") as f:
         json.dump(sorted(list(seen_ids)), f, ensure_ascii=False, indent=2)
+
 
 def send_telegram_message(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
@@ -255,6 +269,7 @@ def send_telegram_message(text):
         timeout=30,
     )
     response.raise_for_status()
+
 
 def flag_for_country(country):
     flags = {
@@ -516,8 +531,10 @@ def flag_for_country(country):
     }
     return flags.get(country, "🏳️")
 
+
 def clean(text):
     return re.sub(r"\s+", " ", text).strip()
+
 
 def is_valid_club_label(label, href=""):
     if not label:
@@ -540,6 +557,7 @@ def is_valid_club_label(label, href=""):
             return False
 
     return True
+
 
 def build_payload(club_country_id, reason_type):
     payload = {
@@ -596,11 +614,21 @@ def build_payload(club_country_id, reason_type):
 
     return payload
 
+
 def get_position_from_text(text):
+    lowered = text.lower()
+
     for pos in POSSIBLE_POSITIONS:
-        if pos in text:
+        if pos.lower() in lowered:
             return pos
+
+    for normalized, aliases in POSITION_ALIASES:
+        for alias in aliases:
+            if alias in lowered:
+                return normalized
+
     return "Unknown position"
+
 
 def fetch_player_profile_details(session, profile_url):
     club = ""
@@ -637,6 +665,7 @@ def fetch_player_profile_details(session, profile_url):
             break
 
     return club, position
+
 
 def parse_players(session, html, club_country_name, reason_text):
     soup = BeautifulSoup(html, "lxml")
@@ -707,6 +736,7 @@ def parse_players(session, html, club_country_name, reason_text):
 
     return list(unique.values())
 
+
 def fetch_search(club_country_id, club_country_name, reason_type, reason_text):
     session = requests.Session()
     session.headers.update(HEADERS)
@@ -719,6 +749,7 @@ def fetch_search(club_country_id, club_country_name, reason_type, reason_text):
     response.raise_for_status()
 
     return parse_players(session, response.text, club_country_name, reason_text)
+
 
 def collect_all_matches():
     all_players = {}
@@ -755,6 +786,7 @@ def collect_all_matches():
 
     return list(all_players.values())
 
+
 def format_message(player):
     flag = flag_for_country(player["club_country"])
     return (
@@ -766,6 +798,7 @@ def format_message(player):
         f"Reason: {player['reason']}\n"
         f"Profile: {player['profile_url']}"
     )
+
 
 def main():
     if not BOT_TOKEN or not CHAT_ID:
@@ -785,6 +818,7 @@ def main():
         time.sleep(2)
 
     save_seen(seen_ids)
+
 
 if __name__ == "__main__":
     main()
