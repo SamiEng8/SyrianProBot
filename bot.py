@@ -791,12 +791,12 @@ def format_message(player):
     flag = flag_for_country(player["club_country"])
     return (
         "Hey bro! I got a new player for you 😁\n\n"
-        f"Player: {player['name']}\n"
-        f"Plays in: {flag} {player['club_country']}\n"
-        f"Club: {player['club'] or 'Unknown club'}\n"
-        f"Position: {player['position']}\n"
-        f"Reason: {player['reason']}\n"
-        f"Profile: {player['profile_url']}"
+        f"🏃‍♂️ Player: {player['name']}\n"
+        f"🌎 Plays in: {flag} {player['club_country']}\n"
+        f"🚩 Club: {player['club'] or 'Unknown club'}\n"
+        f"🔄 Position: {player['position']}\n"
+        f"🇸🇾 Reason: {player['reason']}\n"
+        f"📎 Profile: {player['profile_url']}"
     )
 
 
