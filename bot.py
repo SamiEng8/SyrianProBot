@@ -20,6 +20,8 @@ BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 SYRIA_ID = 163
+MAX_MESSAGES_PER_RUN = 50
+MESSAGE_DELAY_SECONDS = 4
 
 CLUB_COUNTRIES = {
     3: "Albania",
@@ -259,16 +261,36 @@ def save_seen(seen_ids):
 
 def send_telegram_message(text):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    response = requests.post(
-        url,
-        data={
-            "chat_id": CHAT_ID,
-            "text": text,
-            "disable_web_page_preview": True,
-        },
-        timeout=30,
-    )
-    response.raise_for_status()
+    max_attempts = 5
+
+    for attempt in range(max_attempts):
+        response = requests.post(
+            url,
+            data={
+                "chat_id": CHAT_ID,
+                "text": text,
+                "disable_web_page_preview": True,
+            },
+            timeout=30,
+        )
+
+        if response.status_code == 429:
+            retry_after = 10
+            try:
+                data = response.json()
+                retry_after = int(data.get("parameters", {}).get("retry_after", 10))
+            except Exception:
+                pass
+
+            wait_time = retry_after + 2
+            print(f"Telegram rate limit hit. Waiting {wait_time} seconds...")
+            time.sleep(wait_time)
+            continue
+
+        response.raise_for_status()
+        return
+
+    raise RuntimeError("Failed to send Telegram message after multiple retries.")
 
 
 def flag_for_country(country):
