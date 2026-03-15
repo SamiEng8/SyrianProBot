@@ -396,10 +396,10 @@
     "reason": "Second citizenship: Syria"
   },
   "1162239": {
-    "club": "Unknown club",
+    "club": "Altglienicke",
     "club_country": "Germany",
     "id": "1162239",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Syaband Ali",
     "national_team": "",
     "position": "Right-Back",
@@ -704,10 +704,10 @@
     "reason": "Citizenship: Syria"
   },
   "1272738": {
-    "club": "Unknown club",
+    "club": "Al-Sailiya Yth.",
     "club_country": "Qatar",
     "id": "1272738",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Ali Al-Hassan",
     "national_team": "",
     "position": "Midfield",
@@ -891,10 +891,10 @@
     "reason": "Citizenship: Syria"
   },
   "1309619": {
-    "club": "Unknown club",
+    "club": "Green Herons FC",
     "club_country": "United Arab Emirates",
     "id": "1309619",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Mulham Hmidan",
     "national_team": "",
     "position": "Centre-Forward",
@@ -1012,10 +1012,10 @@
     "reason": "Citizenship: Syria"
   },
   "1337797": {
-    "club": "Unknown club",
+    "club": "Man City Youth",
     "club_country": "England",
     "id": "1337797",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Hamza Swed",
     "national_team": "3",
     "position": "Attack",
@@ -1760,10 +1760,10 @@
     "reason": "Citizenship: Syria"
   },
   "1490318": {
-    "club": "Unknown club",
+    "club": "Arnavutköy Yth",
     "club_country": "Türkiye",
     "id": "1490318",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Ali Kadıoğlu",
     "national_team": "",
     "position": "Centre-Forward",
@@ -2244,10 +2244,10 @@
     "reason": "Citizenship: Syria"
   },
   "426325": {
-    "club": "Unknown club",
+    "club": "Al-Ahli",
     "club_country": "Libya",
     "id": "426325",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Pablo Sabbag",
     "national_team": "10",
     "position": "Centre-Forward",
@@ -2629,10 +2629,10 @@
     "reason": "Second citizenship: Syria"
   },
   "658744": {
-    "club": "Fanja SC",
+    "club": "Unknown club",
     "club_country": "Oman",
     "id": "658744",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Fadi Beko",
     "national_team": "",
     "position": "Centre-Forward",
@@ -2662,10 +2662,10 @@
     "reason": "Citizenship: Syria"
   },
   "668149": {
-    "club": "Unknown club",
+    "club": "Westhoven-Ensen",
     "club_country": "Germany",
     "id": "668149",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Schiar Assad",
     "national_team": "",
     "position": "Midfield",
@@ -2904,10 +2904,10 @@
     "reason": "Citizenship: Syria"
   },
   "764582": {
-    "club": "Unknown club",
+    "club": "Quick 1888",
     "club_country": "Netherlands",
     "id": "764582",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Taher Agha",
     "national_team": "",
     "position": "Right Winger",
@@ -3344,10 +3344,10 @@
     "reason": "Second citizenship: Syria"
   },
   "95608": {
-    "club": "Unknown club",
+    "club": "Norsborg FC",
     "club_country": "Sweden",
     "id": "95608",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Rabi Elia",
     "national_team": "",
     "position": "Centre-Back",
