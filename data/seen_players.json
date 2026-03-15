@@ -231,10 +231,10 @@
     "reason": "Country of birth: Syria, Citizenship: Syria"
   },
   "1087012": {
-    "club": "Nordic Utd. FC",
+    "club": "Unknown club",
     "club_country": "Sweden",
     "id": "1087012",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Shergo Shhab",
     "national_team": "",
     "position": "Centre-Forward",
@@ -693,10 +693,10 @@
     "reason": "Country of birth: Syria"
   },
   "1271827": {
-    "club": "UFC Hallein II",
+    "club": "Unknown club",
     "club_country": "Austria",
     "id": "1271827",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Diar Abdulmajid",
     "national_team": "",
     "position": "Defender",
@@ -1045,10 +1045,10 @@
     "reason": "Second citizenship: Syria"
   },
   "1347562": {
-    "club": "Emirates Res.",
+    "club": "Unknown club",
     "club_country": "United Arab Emirates",
     "id": "1347562",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Omran Khalouf",
     "national_team": "6",
     "position": "Right-Back",
@@ -1177,10 +1177,10 @@
     "reason": "Second citizenship: Syria"
   },
   "1387316": {
-    "club": "1980 Wien",
+    "club": "Unknown club",
     "club_country": "Austria",
     "id": "1387316",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Omar Alali Alkhwait",
     "national_team": "",
     "position": "Goalkeeper",
@@ -1496,10 +1496,10 @@
     "reason": "Citizenship: Syria"
   },
   "1471237": {
-    "club": "Gulf United FC",
+    "club": "Unknown club",
     "club_country": "United Arab Emirates",
     "id": "1471237",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Qais Al-Safadi",
     "national_team": "",
     "position": "Midfield",
@@ -2629,10 +2629,10 @@
     "reason": "Second citizenship: Syria"
   },
   "658744": {
-    "club": "Unknown club",
+    "club": "Fanja SC",
     "club_country": "Oman",
     "id": "658744",
-    "is_without_club": true,
+    "is_without_club": false,
     "name": "Fadi Beko",
     "national_team": "",
     "position": "Centre-Forward",
@@ -2651,10 +2651,10 @@
     "reason": "Country of birth: Syria, Citizenship: Syria"
   },
   "663197": {
-    "club": "Örebro SK",
+    "club": "Unknown club",
     "club_country": "Sweden",
     "id": "663197",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Antonio Yakoub",
     "national_team": "7",
     "position": "Centre-Forward",
@@ -2794,10 +2794,10 @@
     "reason": "Second citizenship: Syria"
   },
   "706487": {
-    "club": "Örebro Syr.",
+    "club": "Unknown club",
     "club_country": "Sweden",
     "id": "706487",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Peter Ilia",
     "national_team": "1",
     "position": "Centre-Forward",
@@ -3267,10 +3267,10 @@
     "reason": "Citizenship: Syria"
   },
   "946004": {
-    "club": "Kuwait SC II",
+    "club": "Unknown club",
     "club_country": "Kuwait",
     "id": "946004",
-    "is_without_club": false,
+    "is_without_club": true,
     "name": "Abdullah Al-Mahawesh",
     "national_team": "0",
     "position": "Goalkeeper",
